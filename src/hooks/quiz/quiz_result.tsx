@@ -10,15 +10,20 @@ function quizResult() {
     const { user } = useContext(UserContext)
 
     useEffect(() => {
-        fetchHistory()
-        getQuizInfo()
+        initInfo()
     }, [])
-
-    async function fetchHistory() { setScore(await getHistory(quizId!, user.userId)) }
-    async function getQuizInfo() { setQuestions(await getQuiz(quizId!)) }
 
     const [score, setScore] = useState<number>(0)
     const [questions, setQuestions] = useState<QuestionModel[]>([])
+
+    async function initInfo() { 
+        let questionsVal = await getQuiz(quizId!)
+        setQuestions(questionsVal)
+        let scoreVal = await getHistory(quizId!, user.userId)
+        setScore(scoreVal)
+    }
+
+    
 
     return { quizId, score, questions }
 }
