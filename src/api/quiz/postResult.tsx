@@ -10,9 +10,7 @@ async function postResult(score: number, userId: string):Promise<void> {
         })
         
         if (response.status === 200) {
-            toast_success(response.data.message)
-            // localStorage.removeItem("quizData")
-            // navigate(`/quiz/result/${quizData.quizId}`)              
+            toast_success(response.data.message)          
         }        
     } catch (err) {
         console.error(err)
