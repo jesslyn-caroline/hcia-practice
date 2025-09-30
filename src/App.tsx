@@ -32,31 +32,36 @@ function App() {
 
         {/* == routes for student == */} {
             user.role === "student"? 
+            <>
             <Route path="/" element={<MainLayout/>}>
               <Route index element={<Home />} />
               <Route path="/quiz">
                 <Route index element={<QuizMenu />} />
               </Route>
-
-            </Route> : null }
+              <Route path="/quiz">
+                <Route index element={<QuizMenu />} />
+              </Route>
+              <Route path="/quiz/result/:quizId" element={<QuizResult />} />
+            </Route>
+            <Route path="/quiz/regular/ongoing" element={<OnQuizRegular />} />
+            <Route path="/quiz/flash/ongoing" element={<OnQuizFlash />} />
+            </>
+             : null }
         
         {/* == routes for admin == */}{
             user.role === "admin"? 
             <>
             <Route path="/" element={<MainLayout/>}>
-            <Route index element={<Home />} />
-            <Route path="/question">
-              <Route index element={<QuestionList />} />
-              <Route path="new" element={<CreateQuestion />} />
-              <Route path="edit/:id" element={<EditQuestion />} />
-            </Route>
-            <Route path="/quiz">
-              <Route index element={<QuizMenu />} />
-              
-            </Route>
-            <Route path="/quiz/result/:quizId" element={<QuizResult />} />
-            
-
+              <Route index element={<Home />} />
+              <Route path="/question">
+                <Route index element={<QuestionList />} />
+                <Route path="new" element={<CreateQuestion />} />
+                <Route path="edit/:id" element={<EditQuestion />} />
+              </Route>
+              <Route path="/quiz">
+                <Route index element={<QuizMenu />} />
+              </Route>
+              <Route path="/quiz/result/:quizId" element={<QuizResult />} />
             </Route>
             <Route path="/quiz/regular/ongoing" element={<OnQuizRegular />} />
             <Route path="/quiz/flash/ongoing" element={<OnQuizFlash />} />
