@@ -15,6 +15,9 @@ function Home() {
                 <h1 className={`text-xl`}>Hello, {user.username}</h1>
                 <h2 className={`text-zinc-400`}>How are you today?</h2>
             </div>
+            <div className={`mt-5 font-semibold`}>
+                <h1 className={`text-xl`}>Quiz History</h1>
+            </div>
             <div className={`max-w-screen mb-20 overflow-x-scroll scroll-bar-hidden`}>
             {
                 isOnLoad? (
