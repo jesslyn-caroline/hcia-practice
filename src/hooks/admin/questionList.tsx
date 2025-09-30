@@ -29,6 +29,7 @@ function questionList() {
         setIsOnLoadDelete(id)
         await deleteQuestion(id)
         setIsOnLoadDelete(id)
+        fetch()
     }
 
     function edit (id: string) { 
