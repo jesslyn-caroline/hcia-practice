@@ -70,14 +70,17 @@ function quizFlash () {
         let isCorrect:boolean = checkAnswer(question[currentQuestion].answer, isAnswerAttemptSelected[currentQuestion], question[currentQuestion].options)
         if (question[currentQuestion].type === "single-word-answer") isCorrect = answerAttemptValue[currentQuestion][0].toLowerCase() === question[currentQuestion].answer[0].toLowerCase()
 
+        let newScore = quizData.score
         if (isCorrect) {
-            setScore(quizData.score + question[currentQuestion].score)
-        }   
-        localStorage.setItem("quizData", JSON.stringify({...quizData, lowerBoundQuizTime: lowerBound, 
-            score: (isCorrect ? quizData.score + question[currentQuestion].score : quizData.score),
-        }))
+            newScore = quizData.score + question[currentQuestion].score
+            setScore(newScore)
+        }
 
-        navigate(`/quiz/result/${quizData.quizId}`)
+        localStorage.setItem("quizData", JSON.stringify({
+            ...quizData,
+            lowerBoundQuizTime: lowerBound,
+            score: newScore, 
+        }))
     }
 
     return { currentQuestion, question, timeToNext,  isAnswerAttemptSelected, answerAttemptValue, handleCheckBoxAnswer, handleRadioAnswer, handleEssayAnswer, score, submit }
