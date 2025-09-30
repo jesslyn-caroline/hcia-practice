@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import userIdValidator from "../validators/userId_validator";
 import passwordValidator from "../validators/password_validator";
 import auth from "../api/login";
 import type { UserModel } from "../model/user_model";
+import { UserContext } from "../providers/user_provider";
 
 function useLogin() {
     const navigate = useNavigate()
+    const { loginUser } = useContext(UserContext)
 
     const [userId, setUserId] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -29,19 +31,18 @@ function useLogin() {
 
         if (userIdValid === "" && passwordValid === "") {
             setIsOnLoad(true)
-            let user:UserModel | false = await auth(userId, password)
+            let user:UserModel = await auth(userId, password)
             setIsOnLoad(false)
 
             if (user) {
+                loginUser(user)
                 setTimeout(() => {
                     navigate("/")
                 }, 3000)
             }
         }
     }
-
-
-
+    
     return { 
         userId, 
         password, 

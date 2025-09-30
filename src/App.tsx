@@ -1,9 +1,19 @@
-import { Routes, Route, Navigate } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from './providers/user_provider'
 import LoginSignupLayout from './layouts/loginsign_layout'
 import Login from './pages/login'
 import Signup from './pages/signup'
+import MainLayout from './layouts/main_layout'
+import Home from './pages/home'
+import NotFound from './pages/not_found'
+import CreateQuestion from './pages/admin/createquestion'
+import EditQuestion from './pages/admin/editquestion'
+import QuestionList from './pages/admin/questionList'
+import QuizMenu from './pages/quiz/quiz_menu'
+import OnQuizRegular from './pages/quiz/on_quiz_regular'
+import OnQuizFlash from './pages/quiz/on_quiz_flash'
+import QuizResult from './pages/quiz/quiz_result'
 
 function App() {
 
@@ -11,16 +21,52 @@ function App() {
 
   return (
     <Routes>
-      {/* == if user tries to access "/" without log in == */}
-      <Route path="/" element={<Navigate to="/login" />} />
+        {/* == if user tries to access "/" without log in == */}
+        <Route path="/" element={<Navigate to="/login" />} /> : null
 
-      {/* == login and sign up == */}
-      <Route element={<LoginSignupLayout />} >
-        <Route path="/login" element={ <Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Route>
+        {/* == login and sign up == */}
+        <Route element={<LoginSignupLayout />} >
+            <Route path="/login" element={ <Login />} />
+            <Route path="/signup" element={<Signup />} />
+        </Route>
 
-      {/* == routes for student == */}
+        {/* == routes for student == */} {
+            user.role === "student"? 
+            <Route path="/" element={<MainLayout/>}>
+              <Route index element={<Home />} />
+              <Route path="/quiz">
+                <Route index element={<QuizMenu />} />
+              </Route>
+
+            </Route> : null }
+        
+        {/* == routes for admin == */}{
+            user.role === "admin"? 
+            <>
+            <Route path="/" element={<MainLayout/>}>
+            <Route index element={<Home />} />
+            <Route path="/question">
+              <Route index element={<QuestionList />} />
+              <Route path="new" element={<CreateQuestion />} />
+              <Route path="edit/:id" element={<EditQuestion />} />
+            </Route>
+            <Route path="/quiz">
+              <Route index element={<QuizMenu />} />
+              
+            </Route>
+            <Route path="/quiz/result/:quizId" element={<QuizResult />} />
+            
+
+            </Route>
+            <Route path="/quiz/regular/ongoing" element={<OnQuizRegular />} />
+            <Route path="/quiz/flash/ongoing" element={<OnQuizFlash />} />
+            </>
+             : null }
+
+      
+    
+      {/* ==== */}
+
       {/* {
         user.role === "student"? 
         <>
@@ -81,7 +127,7 @@ function App() {
       }
       
       {/* == unauthorized == */}
-      {/* <Route path="*" element={<NotFound />} />  */}
+      <Route path="*" element={<NotFound />} /> 
     </Routes>
   )
 }

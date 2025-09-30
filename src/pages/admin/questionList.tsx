@@ -1,0 +1,90 @@
+import InputField from "../../components/field/input_field"
+import SelectField from "../../components/field/select_field"
+import ActionButton from "../../components/button/action_button"
+import questionList from "../../hooks/admin/questionList"
+import ReactPaginate_ from "../../components/react_paginate"
+
+function QuestionList() {
+
+    const {typeSearch, questionSearch, yearSearch, currentItems, pageCount, handlePageClick, startOffset, handleQuestionSearch, handleYearSearch, handleTypeSearch, isOnLoadDelete, search, deleteQ, edit} = questionList()
+
+    return (
+        <div>
+            <div className={`flex flex-col`}>
+                <i className={`text-4xl ri-list-check-2 mb-2`}/>
+                <h1 className={`text-xl font-semibold mb-8`}>Question List</h1>
+                <div className={`space-y-4`}>
+                    <div className={`flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-12`}>
+                        <InputField handleInputChange={handleQuestionSearch} inputType="text" placeholderValue="Search" idValue="search" labelValue="Question Search" value={questionSearch} />
+                        <div className={`flex flex-row space-x-12`}>
+                            <InputField handleInputChange={handleYearSearch} inputType="text" placeholderValue="YYYY" idValue="year" labelValue="Year" value={yearSearch} />
+                            <SelectField handleSelectChange={handleTypeSearch} 
+                                optionsValue={["", "multiple-answer-multiple-choice", "single-answer-multiple-choice", "true-or-false", "single-word-answer"]} 
+                                optionsLabel={["-", "Multiple Answers Multiple Choice", "Single Answer Multiple Choice", "True or False", "Single Word Answer"]}
+                                labelValue="Question Type" 
+                                titleValue="question-type"
+                                errMessage=""
+                                value={typeSearch} />
+                        </div>
+                        <div className={`md:mt-3`}>
+                            <ActionButton action={search} text="Search" icon="ri-search-line" />
+                        </div>
+                    </div>
+                    <div className={``}>
+                        <div className={`max-w-screen mb-20 overflow-x-scroll scroll-bar-hidden`}>
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="text-gray-500 uppercase">
+                                    <tr>
+                                        <th scope="col" className="w-12 font-medium">No.</th>
+                                        <th scope="col" className="w-90 px-6 py-3 font-medium text-start">Question</th>
+                                        <th scope="col" className="px-6 py-3 font-medium">Year</th>
+                                        <th scope="col" className="w-70 px-6 py-3 font-medium">Score</th>
+                                        <th scope="col" className="w-70 font-medium">Type</th>
+                                        <th scope="col" className="w-60 px-6 py-3 font-medium text-start">Answer</th>
+                                        <th scope="col" className="px-6 py-3 font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    { ...currentItems.map((question, index) => {
+                                        return (
+                                            <tr key={question._id}>
+                                                <td className="py-3 text-center">{index + startOffset + 1}</td>
+                                                <td className="px-6 py-3">{question.question}</td>
+                                                <td className="py-3 text-center">{question.year}</td>
+                                                <td className="px-6 py-3 text-center">{question.score}</td>
+                                                <td className="py-3 text-center">{question.type.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}</td>
+                                                <td className="px-6 py-3">
+                                                    {...question.answer.map((answer) => {
+                                                        return (
+                                                            <p className={`mb-2`}>{answer}</p>
+                                                        )
+                                                    })}
+                                                </td>
+                                                <td className="px-6 py-3 flex flex-col md:flex-row justify-center space-x-0 space-y-2 md:space-x-2 md:space-y-0">
+                                                    <ActionButton action={() => deleteQ(question._id)} 
+                                                        text="Delete" icon="" isOnLoad={isOnLoadDelete === question._id} />
+                                                    <ActionButton action={() => { edit(question._id) }}
+                                                        text="Edit" icon="" isOnLoad={false}
+                                                        bgColor="bg-yellow-400" hoverbgColor="hover:bg-yellow-500"
+                                                        borderColor="border-yellow-400" hoverBorderColor="hover:border-yellow-400" 
+                                                        textColor="text-white" hoverTextColor="hover:text-white"/>
+                                                </td>
+                                            </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div className={`flex justify-center overflow-x-auto scroll-bar-hidden`}>
+                            <ReactPaginate_ handlePageClick={handlePageClick} pageCount={pageCount} />
+                        </div>
+                    </div>
+                </div>       
+            </div>
+        </div>
+    )
+}
+
+export default QuestionList

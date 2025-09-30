@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router-dom"
 import type { RouteObject } from "../model/route_object";
 import type { UserModel } from "../model/user_model";
 
@@ -20,9 +20,9 @@ function UserProvider({children}: {children: React.ReactNode}) {
         return user? JSON.parse(user) : { userId: "", username: "", classId: "", role: ""}
     })
 
-    function loginUser(user: UserModel):void {
-       setUser(user)
-       sessionStorage.setItem("user", JSON.stringify(user))
+    function loginUser(loggedInUser: UserModel):void {
+       setUser(loggedInUser)
+       sessionStorage.setItem("user", JSON.stringify(loggedInUser))
     }
 
     function logout():void {
@@ -38,14 +38,14 @@ function UserProvider({children}: {children: React.ReactNode}) {
         {link: "/", name: "Home", icon: "ri-home-2-line"},
         {link: "/question/new", name: "Create Question", icon: "ri-menu-add-line"},
         {link: "/question", name: "Question List", icon: "ri-list-check-2"},
-        {link: "/classes", name: "Classes", icon: "ri-group-3-line"},
-        {link: "/assignment", name: "Assignments", icon: "ri-pencil-ruler-line"},
+        {link: "/quiz", name: "Quiz", icon: "ri-shapes-line"},
+
     ]
     const userRoute: RouteObject[] = [
         {link: "/", name: "Home", icon: "ri-home-2-line"},
         {link: "/class", name: "Class", icon: "ri-group-3-line"},
-        {link: "/quiz/menu", name: "Quiz", icon: "ri-shapes-line"},
-        {link: "/assignment", name: "Assignments", icon: "ri-pencil-ruler-line"},
+        {link: "/quiz", name: "Quiz", icon: "ri-shapes-line"},
+
     ]
 
     const [userRoutes, setUserRoutes] = useState<RouteObject[]>([])

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
 
 import signUp from "../api/signup"
 import studentIdValidator from "../validators/studentId_validator"
@@ -7,6 +8,8 @@ import passwordValidator from "../validators/password_validator"
 import confirmPasswordValidator from "../validators/confirmPassword"
 
 function useSignup() {
+
+    const navigate = useNavigate()
 
     const [studentId, setStudentId] = useState<string>("")
     const [username, setUsername] = useState<string>("")
@@ -40,24 +43,18 @@ function useSignup() {
             setIsOnLoad(true)
             await signUp(studentId, username, password)
             setIsOnLoad(false)
+
+            setTimeout(() => {
+                navigate("/login")
+            }, 3000)
         }
     }
 
     return {
-        studentId,
-        username,
-        password,
-        confirmPassword,
-        handleStudentIdChange,
-        handleUsernameChange,
-        handlePasswordChange,
-        handleConfirmPasswordChange,
-        studentIdErrMsg,
-        usernameErrMsg,
-        passwordErrMsg,
-        confirmPasswordErrMsg,
-        getSignup,
-        isOnLoad
+        studentId, username, password, confirmPassword,
+        handleStudentIdChange, handleUsernameChange, handlePasswordChange, handleConfirmPasswordChange,
+        studentIdErrMsg, usernameErrMsg, passwordErrMsg, confirmPasswordErrMsg,
+        getSignup, isOnLoad
     }
 }
 
